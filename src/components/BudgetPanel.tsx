@@ -160,7 +160,7 @@ const BudgetPanel: React.FC<BudgetPanelProps> = ({ data }) => {
                   <XAxis dataKey="name" stroke="#374151" fontSize={7} tickLine={false} axisLine={false} />
                   <YAxis hide />
                   <Tooltip contentStyle={{ backgroundColor: 'rgba(15,23,42,0.95)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '6px', color: '#fff', fontSize: '9px' }}
-                    formatter={(v: number) => v.toFixed(3)} />
+                    formatter={(v: number) => v !== undefined ? v.toFixed(3) : '0.000'} />
                   <Bar dataKey="impact" radius={[2, 2, 0, 0]}>
                     {impactChartData.map((e, i) => <Cell key={i} fill={e.color} />)}
                   </Bar>

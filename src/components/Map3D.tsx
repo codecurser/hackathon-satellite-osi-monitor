@@ -1,5 +1,10 @@
 'use client';
 
+// Suppress TS error for global window object mutation
+if (typeof window !== 'undefined') {
+  (window as any).CESIUM_BASE_URL = '/cesium/';
+}
+
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import * as Cesium from 'cesium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
@@ -45,16 +50,44 @@ const Map3D: React.FC<Map3DProps> = ({ data, selectedYear, mode }) => {
       geocoder: false,
       fullscreenButton: false,
       vrButton: false,
+      baseLayer: false
+    } as any);
+
+    // Suppress TS error for addImageryProvider
+    try {
+      (viewer.imageryLayers as any).addImageryProvider(
+        new Cesium.OpenStreetMapImageryProvider({
+          url: 'https://a.tile.openstreetmap.org/'
+        })
+      );
+    } catch (e) {
+      console.warn('Could not add imagery provider', e);
+    }
+
+    // Futuristic space styling
+    viewer.scene.skyBox = new Cesium.SkyBox({
+      sources: {
+        positiveX: '/cesium/Assets/Textures/SkyBox/tycho2t3_80_px.jpg',
+        negativeX: '/cesium/Assets/Textures/SkyBox/tycho2t3_80_mx.jpg',
+        positiveY: '/cesium/Assets/Textures/SkyBox/tycho2t3_80_py.jpg',
+        negativeY: '/cesium/Assets/Textures/SkyBox/tycho2t3_80_my.jpg',
+        positiveZ: '/cesium/Assets/Textures/SkyBox/tycho2t3_80_pz.jpg',
+        negativeZ: '/cesium/Assets/Textures/SkyBox/tycho2t3_80_mz.jpg'
+      }
     });
 
+    // Add futuristic tint and lighting
+    viewer.scene.globe.baseColor = Cesium.Color.fromCssColorString('#020617'); // dark background
+    viewer.scene.globe.enableLighting = true;
+    viewer.scene.globe.atmosphereHueShift = -0.8;
+    viewer.scene.globe.atmosphereSaturationShift = 0.5;
+    viewer.scene.globe.atmosphereBrightnessShift = -0.5;
+    
     // Set initial view to Delhi
     viewer.camera.flyTo({
       destination: Cesium.Cartesian3.fromDegrees(77.2090, 28.6139, 50000),
       duration: 2.0
     });
-
-    // Enable lighting based on sun/moon positions
-    viewer.scene.globe.enableLighting = true;
 
     viewerRef.current = viewer;
     setCesiumLoaded(true);

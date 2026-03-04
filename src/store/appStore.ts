@@ -1,5 +1,9 @@
 import { create } from 'zustand';
-import { TimeControlState, LayerControlState, MapViewState } from '@/types';
+import {
+  TimeControlState, LayerControlState, MapViewState,
+  BudgetConfig, GridSurvivalData, OptimizationResult,
+  ROIResult, YearSnapshot, EngineTab
+} from '@/types';
 
 interface AppState extends TimeControlState, LayerControlState {
   mapViewState: MapViewState;
@@ -7,7 +11,16 @@ interface AppState extends TimeControlState, LayerControlState {
   selectedPlantationLocation: any;
   isLoading: boolean;
   error: string | null;
-  
+
+  // Engine states
+  activeEngine: EngineTab;
+  survivalData: GridSurvivalData[] | null;
+  budgetConfig: BudgetConfig;
+  optimizationResult: OptimizationResult | null;
+  roiResult: ROIResult | null;
+  simulationSnapshots: YearSnapshot[] | null;
+  simulationYear: number;
+
   // Actions
   setSelectedYear: (year: number) => void;
   setIsPlaying: (playing: boolean) => void;
@@ -20,11 +33,18 @@ interface AppState extends TimeControlState, LayerControlState {
   setSelectedPlantationLocation: (location: any) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
+  setActiveEngine: (engine: EngineTab) => void;
+  setSurvivalData: (data: GridSurvivalData[] | null) => void;
+  setBudgetConfig: (config: Partial<BudgetConfig>) => void;
+  setOptimizationResult: (result: OptimizationResult | null) => void;
+  setROIResult: (result: ROIResult | null) => void;
+  setSimulationSnapshots: (snapshots: YearSnapshot[] | null) => void;
+  setSimulationYear: (year: number) => void;
   reset: () => void;
 }
 
 const initialMapViewState: MapViewState = {
-  longitude: 77.2090, // Delhi center
+  longitude: 77.2090,
   latitude: 28.6139,
   zoom: 10,
   pitch: 0,
@@ -46,7 +66,14 @@ const initialLayerState: LayerControlState = {
   viewMode: '2d'
 };
 
-export const useAppStore = create<AppState>((set, get) => ({
+const defaultBudgetConfig: BudgetConfig = {
+  totalBudget: 5000000,
+  costPerTree: 120,
+  treesPerHectare: 400,
+  plantableAreaPerGrid: 8,
+};
+
+export const useAppStore = create<AppState>((set) => ({
   ...initialTimeState,
   ...initialLayerState,
   mapViewState: initialMapViewState,
@@ -55,35 +82,42 @@ export const useAppStore = create<AppState>((set, get) => ({
   isLoading: false,
   error: null,
 
+  // Engine states
+  activeEngine: 'osi',
+  survivalData: null,
+  budgetConfig: defaultBudgetConfig,
+  optimizationResult: null,
+  roiResult: null,
+  simulationSnapshots: null,
+  simulationYear: 2025,
+
   setSelectedYear: (year) => set({ selectedYear: year }),
-  
   setIsPlaying: (playing) => set({ isPlaying: playing }),
-  
   setPlaySpeed: (speed) => set({ playSpeed: speed }),
-  
-  setMode: (mode) => set({ 
+  setMode: (mode) => set({
     mode,
     selectedYear: mode === 'forecast' ? 2024 : 2023
   }),
-  
   setViewMode: (viewMode) => set({ viewMode }),
-  
   toggleLayer: (layer) => set((state) => ({
     [layer]: !state[layer]
   })),
-  
   setMapViewState: (newState) => set((state) => ({
     mapViewState: { ...state.mapViewState, ...newState }
   })),
-  
   setSelectedFeature: (feature) => set({ selectedFeature: feature }),
-  
   setSelectedPlantationLocation: (location) => set({ selectedPlantationLocation: location }),
-  
   setLoading: (loading) => set({ isLoading: loading }),
-  
   setError: (error) => set({ error }),
-  
+  setActiveEngine: (engine) => set({ activeEngine: engine }),
+  setSurvivalData: (data) => set({ survivalData: data }),
+  setBudgetConfig: (config) => set((state) => ({
+    budgetConfig: { ...state.budgetConfig, ...config }
+  })),
+  setOptimizationResult: (result) => set({ optimizationResult: result }),
+  setROIResult: (result) => set({ roiResult: result }),
+  setSimulationSnapshots: (snapshots) => set({ simulationSnapshots: snapshots }),
+  setSimulationYear: (year) => set({ simulationYear: year }),
   reset: () => set({
     ...initialTimeState,
     ...initialLayerState,
@@ -91,6 +125,13 @@ export const useAppStore = create<AppState>((set, get) => ({
     selectedFeature: null,
     selectedPlantationLocation: null,
     isLoading: false,
-    error: null
+    error: null,
+    activeEngine: 'osi',
+    survivalData: null,
+    budgetConfig: defaultBudgetConfig,
+    optimizationResult: null,
+    roiResult: null,
+    simulationSnapshots: null,
+    simulationYear: 2025,
   })
 }));

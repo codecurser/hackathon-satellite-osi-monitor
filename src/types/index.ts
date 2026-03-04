@@ -57,3 +57,95 @@ export interface LayerControlState {
   showOSI: boolean;
   viewMode: '2d' | '3d';
 }
+
+// ========== ENGINE 2: Tree Survival Types ==========
+export interface SurvivalResult {
+  survivalProbability: number;
+  expectedNDVIGain: number;
+  stabilizationYears: number;
+  suitabilityScore: number;
+}
+
+export interface GridSurvivalData {
+  gridId: string;
+  coordinates: [number, number];
+  lat: number;
+  lng: number;
+  currentOSI: number;
+  currentNDVI: number;
+  currentAOD: number;
+  currentTemp: number;
+  survivalProbability: number;
+  expectedNDVIGain: number;
+  stabilizationYears: number;
+  suitabilityScore: number;
+}
+
+// ========== ENGINE 3: Budget Optimizer Types ==========
+export interface BudgetConfig {
+  totalBudget: number;
+  costPerTree: number;
+  treesPerHectare: number;
+  plantableAreaPerGrid: number;
+}
+
+export interface GridImpact {
+  gridId: string;
+  coordinates: [number, number];
+  lat: number;
+  lng: number;
+  impactScore: number;
+  efficiencyRatio: number;
+  treesNeeded: number;
+  costForGrid: number;
+  survivalProb: number;
+  expectedNDVIGain: number;
+  currentOSI: number;
+  osiReductionPotential: number;
+  rank: number;
+}
+
+export interface OptimizationResult {
+  selectedGrids: GridImpact[];
+  totalTrees: number;
+  totalCost: number;
+  budgetUtilization: number;
+  totalImpactScore: number;
+  averageSurvival: number;
+  gridsEvaluated: number;
+}
+
+// ========== ENGINE 4: ROI Calculator Types ==========
+export interface ROIResult {
+  predictedOSIReduction: number;
+  riskCategoryImprovement: number;
+  co2AbsorptionTonnes: number;
+  impactPerLakh: number;
+  environmentalROI: number;
+  oxygenGeneratedKg: number;
+  treesPerCriticalZone: number;
+  waterRetentionLiters: number;
+}
+
+// ========== ENGINE 5: Multi-Year Simulator Types ==========
+export interface GridSnapshot {
+  gridId: string;
+  osi: number;
+  ndvi: number;
+  aod: number;
+  riskLevel: string;
+}
+
+export interface YearSnapshot {
+  year: number;
+  avgOSI: number;
+  criticalZones: number;
+  highRiskZones: number;
+  avgNDVI: number;
+  co2AbsorbedCumulative: number;
+  oxygenGenerated: number;
+  gridSnapshots: GridSnapshot[];
+}
+
+// ========== Dashboard Types ==========
+export type EngineTab = 'osi' | 'survival' | 'budget' | 'roi' | 'simulation';

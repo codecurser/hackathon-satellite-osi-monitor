@@ -1,122 +1,252 @@
-# 🌍 Urban Oxygen Deficit Predictor (UODP)
+# 🌍 UODP 2.0 — Urban Climate Intelligence Platform
 
-**AI Climate Intelligence Platform for Urban Environmental Monitoring**
-
-## 📋 Overview
-
-The Urban Oxygen Deficit Predictor (UODP) is a production-ready environmental AI dashboard that provides real-time monitoring and prediction of oxygen stress levels in urban areas. Built for government and smart city deployment, this platform combines satellite-derived environmental indicators with AI-powered forecasting to identify critical zones requiring immediate plantation intervention.
-
-## ✨ Key Features
-
-### 🧠 **Time Intelligence Engine**
-- **Historical Analysis**: Interactive timeline from 2019-2023
-- **AI Forecast Mode**: XGBoost-powered predictions for 2024
-- **Smooth Animation**: Play/pause controls with speed adjustment (0.5x, 1x, 2x)
-- **Real-time Updates**: Instant data visualization changes
-
-### 🗺️ **Dual Visualization System**
-- **2D Mapbox GL JS**: Interactive satellite map with dynamic OSI overlays
-- **3D Cesium Globe**: Immersive 3D Earth visualization with terrain data
-- **Dynamic Color Gradients**: Green → Yellow → Orange → Red risk levels
-- **Hover & Click Interactions**: Detailed grid information on demand
-
-### 📊 **AI Insights Panel**
-- **KPI Dashboard**: Average OSI, critical zones, oxygen deficit index
-- **Risk Distribution**: Interactive pie charts with zone breakdowns
-- **Feature Importance**: AOD, NDVI, Temperature, Year impact analysis
-- **Trend Analysis**: Historical OSI trends (2019-2024)
-- **Model Metrics**: XGBoost performance indicators (R² ≈ 0.966)
-
-### 🌱 **Critical Plantation Zones**
-- **Priority Ranking**: Urgent, High, Medium priority classifications
-- **Location Intelligence**: Exact coordinates and area requirements
-- **Environmental Context**: NDVI, AOD, temperature data per zone
-- **Actionable Insights**: Hectares needed and tree count estimates
-- **Interactive Cards**: Click-to-zoom functionality
-
-### 🎨 **Futuristic UI Design**
-- **Dark Space Theme**: Government command center aesthetic
-- **Neon Accents**: Cyan highlights with glass morphism effects
-- **Smooth Animations**: Framer Motion powered transitions
-- **Responsive Layout**: Optimized for dashboard viewing
-
-## 🚀 Getting Started
-
-### **Prerequisites**
-- Node.js 18+ 
-- npm or yarn package manager
-
-### **Installation**
-```bash
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-```
-
-### **Access the Dashboard**
-Open your browser and navigate to: `http://localhost:3000`
-
-## 🎯 Usage Guide
-
-### **Time Navigation**
-1. Use the year slider to select specific years (2019-2023)
-2. Click Play ▶ to animate through years automatically
-3. Switch to AI Forecast Mode for 2024 predictions
-4. Adjust animation speed with 0.5x, 1x, 2x controls
-
-### **Map Visualization**
-1. Toggle between 2D Map and 3D Globe views
-2. Hover over grid cells for quick information
-3. Click on grids for detailed environmental data
-4. Use the Planting button to view critical zones
-
-### **Analytics Panel**
-1. Monitor real-time KPIs and trends
-2. Analyze risk distribution across zones
-3. Review feature importance for AI model
-4. Track historical OSI trends
-
-### **Plantation Planning**
-1. Click "Planting" button to view critical zones
-2. Review priority-ranked location cards
-3. Analyze environmental context per zone
-4. Calculate required plantation area and tree counts
-
-## 📊 Data Model
-
-### **Environmental Indicators**
-- **AOD** (Aerosol Optical Depth): Atmospheric pollution indicator
-- **NDVI** (Normalized Difference Vegetation Index): Vegetation health
-- **Temperature**: Surface temperature measurements
-- **OSI** (Oxygen Stress Index): Composite oxygen deficit metric
-- **Predicted_OSI_2024**: AI-powered forecast values
-
-### **Risk Classification**
-- **Low**: OSI < 700 (Green)
-- **Moderate**: OSI 700-749 (Yellow)
-- **High**: OSI 750-799 (Orange)
-- **Critical**: OSI ≥ 800 (Red)
-
-## 🏗️ Technical Architecture
-
-### **Frontend Stack**
-- **Next.js 14** with App Router and TypeScript
-- **React 18** with modern hooks and patterns
-- **Tailwind CSS** for responsive styling
-- **Framer Motion** for animations
-- **Zustand** for state management
-
-### **Visualization Libraries**
-- **Mapbox GL JS** for 2D mapping
-- **CesiumJS** for 3D globe visualization
-- **Recharts** for analytics charts
-- **Papa Parse** for CSV data processing
+> **Next-generation satellite-driven environmental monitoring & graph-theory optimization platform for Delhi NCR**
 
 ---
 
-**Urban Oxygen Deficit Predictor (UODP)**  
-*AI Climate Intelligence Platform for Smart Cities*  
+## 📋 Overview
 
-Built with ❤️ for sustainable urban development
+UODP 2.0 is a production-grade AI + Graph Theory dashboard for monitoring, predicting, and optimizing urban environmental health across Delhi NCR's **1km² grid** system. It fuses **satellite telemetry**, **ML-based forecasting**, and **6 graph algorithms** into a unified command-center UI with two distinct windows:
+
+| Window | URL | Purpose |
+|--------|-----|---------|
+| **Main Dashboard** | `/` | OSI monitoring, survival AI, budget optimizer, ROI engine, multi-year simulator |
+| **Green Lab** | `/green-lab` | Scientific graph-algorithm simulation for optimal tree placement |
+
+---
+
+## ✨ Feature Engines
+
+### 🌫️ Engine 1 — OSI Stress Map
+- Historical satellite data: **2019 → 2023** across ~900 Delhi NCR grid cells
+- **AI Forecast Mode**: XGBoost-predicted OSI for 2024
+- Interactive timeline with play/pause animation (0.5×, 1×, 2×)
+- Dual-view: **2D Mapbox GL** map + **3D Cesium Globe**
+- Click-to-inspect any grid: AOD, NDVI, Temp, OSI, Risk
+
+### 🌱 Engine 2 — Survival AI
+- Heuristic ecological model: NDVI × Temperature × AOD × OSI
+- Computes **survival probability**, **expected NDVI gain**, **stabilization years**, **suitability score** for every grid
+- Color-coded map overlay: green (high survival) → red (low survival)
+
+### 💰 Engine 3 — Budget Optimizer
+- Greedy knapsack algorithm: maximum environmental impact within a given budget
+- Configurable: total budget (₹5L–₹5Cr), cost per tree (₹50–₹300)
+- Outputs: grids selected, trees planted, budget utilization %, avg survival
+
+### 📊 Engine 4 — ROI Engine
+- Environmental return: CO₂ absorbed (t/yr), O₂ generated (kg), OSI reduction, water retention
+- ROI grade: A–F composite environmental score per ₹ invested
+
+### 🔮 Engine 5 — Multi-Year Simulator
+- Logistic growth model projecting plantation impact to **2028**
+- Per-year snapshots: avg OSI, critical zones, cumulative CO₂, oxygen generated
+
+### 🌿 Engine 6 — Green Optimization Lab *(Separate Window)*
+Six graph algorithms running client-side over the Delhi grid graph:
+
+| Algorithm | Strategy | Edge Type |
+|-----------|----------|-----------|
+| ⚡ **Greedy** | Sort by impact score | — |
+| 🔗 **PageRank** | Environmental influence propagation (30 iterations, d=0.85) | Node ranking |
+| 🕸️ **Centrality** | Weighted degree centrality | Hub detection |
+| 🗺️ **Dijkstra** | Pollution choke-point blocking | Source→selected edges |
+| 🌿 **MST (Kruskal's)** | Green corridors, minimum plantation cost | Spanning tree edges |
+| 📡 **Max Coverage** | Greedy set-cover for maximum area influence | — |
+
+Graph nodes = 1km² grids · Edges = 4-directional adjacency · Weight = OSI-based environmental influence
+
+---
+
+## 🧪 Green Lab (Scientific Window)
+
+Navigate to `http://localhost:3000/green-lab` for the dedicated scientific simulation interface:
+
+- **3-panel layout**: Control Tower → Map + Node Graph → Data Observatory
+- **SVG Node Graph**: All grid nodes projected to canvas; selected nodes glow in algorithm color; MST/Dijkstra edges animated as dashed lines
+- **Terminal execution log**: Real-time output of each algorithm step
+- **Benchmark mode**: Run all 6 algorithms sequentially, auto-populated radar chart + comparison bars
+- **Radar chart**: 4-axis comparison (OSI Reduction / Coverage / Impact Score / Efficiency)
+- Self-contained: loads satellite CSV + computes survival data autonomously on page mount
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- npm
+
+### Installation & Dev Server
+
+```bash
+npm install
+npm run dev
+```
+
+Open **`http://localhost:3000`** for the main dashboard.  
+Open **`http://localhost:3000/green-lab`** for the scientific graph simulation lab.
+
+### Production Build
+
+```bash
+npm run build
+npm start
+```
+
+---
+
+## 🗂️ Project Structure
+
+```
+src/
+├── app/
+│   ├── page.tsx                   # Main dashboard entry
+│   ├── layout.tsx                 # Root layout + fonts
+│   ├── globals.css                # Design tokens, components, animations
+│   └── green-lab/
+│       └── page.tsx               # Green Lab page route (/green-lab)
+│
+├── components/
+│   ├── UODPDashboard.tsx          # Main dashboard shell (tabs, header, map layout)
+│   ├── Map2D.tsx                  # Mapbox GL 2D map + graph edge overlay
+│   ├── Map3D.tsx                  # CesiumJS 3D globe
+│   ├── TimeControl.tsx            # Year slider + play/pause controls
+│   ├── AnalyticsPanel.tsx         # OSI analytics, trend charts, KPIs
+│   ├── TreeSurvivalPanel.tsx      # Engine 2 panel
+│   ├── BudgetPanel.tsx            # Engine 3 + 4 panel
+│   ├── SimulationPanel.tsx        # Engine 5 panel
+│   ├── GreenLabPanel.tsx          # Engine 6 side-panel (in dashboard)
+│   └── GreenLabImmersive.tsx      # Engine 6 full-screen scientific window
+│
+├── engines/
+│   ├── survivalModel.ts           # Engine 2: Tree survival heuristic model
+│   ├── budgetOptimizer.ts         # Engine 3: Greedy knapsack optimizer
+│   ├── roiCalculator.ts           # Engine 4: Environmental ROI calculator
+│   ├── impactSimulator.ts         # Engine 5: Logistic growth simulator
+│   └── graphOptimizer.ts          # Engine 6: 6 graph algorithms (Greedy/PageRank/Centrality/Dijkstra/MST/MaxCoverage)
+│
+├── store/
+│   └── appStore.ts                # Zustand global state (engines, map, time, greenLabState)
+│
+├── types/
+│   └── index.ts                   # All TypeScript interfaces + EngineTab union
+│
+└── utils/
+    └── dataProcessor.ts           # CSV parser + GeoJSON converter
+```
+
+---
+
+## 📊 Data Model
+
+### Environmental Indicators (per 1km² grid)
+| Field | Description |
+|-------|-------------|
+| `OSI` | Oxygen Stress Index — composite environmental stress metric |
+| `AOD` | Aerosol Optical Depth — atmospheric pollution indicator |
+| `NDVI` | Normalized Difference Vegetation Index — vegetation health |
+| `Temp` | Surface temperature (°C) |
+| `Predicted_OSI_2024` | XGBoost AI forecast value |
+
+### OSI Risk Classification
+| Range | Level | Color |
+|-------|-------|-------|
+| < 700 | Minimal | 🟢 Green |
+| 700–749 | Elevated | 🟡 Yellow |
+| 750–799 | High | 🟠 Orange |
+| ≥ 800 | Critical | 🔴 Red |
+
+### Data Files (in `/public`)
+```
+Delhi_1km_Final_OSI_Professional_2019.csv
+Delhi_1km_Final_OSI_Professional_2020.csv
+Delhi_1km_Final_OSI_Professional_2021.csv
+Delhi_1km_Final_OSI_Professional_2022.csv
+Delhi_1km_Final_OSI_Professional_2023.csv
+Delhi_2024_OSI_Prediction.csv
+```
+
+---
+
+## 🏗️ Tech Stack
+
+### Core
+- **Next.js 16** (App Router) + **TypeScript**
+- **React 19** with modern hooks
+- **Zustand 5** for global state
+
+### Visualization
+- **Mapbox GL JS 3** — 2D interactive map
+- **CesiumJS 1.138** — 3D globe
+- **Recharts 3** — analytics charts (Bar, Radar, Line, Pie)
+
+### Styling & Animation
+- **Tailwind CSS 4** + **Vanilla CSS** design tokens
+- **Framer Motion 12** — transitions + micro-animations
+
+### Data
+- **Papa Parse 5** — CSV streaming parser
+
+---
+
+## 🧬 Graph Theory — Engine 6 Deep Dive
+
+The city grid is modeled as a graph:
+- **Nodes**: Each 1km² grid cell
+- **Edges**: 4-directional adjacency (N / S / E / W)
+- **Weights**: OSI-based environmental influence
+
+**Graph construction** uses rounded lat/lng (STEP = 0.01°  ≈ 1km) for adjacency detection.
+
+```
+Grid Graph:
+  [N] [N] [N]
+[W] ■ ─ ■ ─ ■ [E]
+    |   |   |
+    ■ ─ ■ ─ ■
+    |   |   |
+    ■ ─ ■ ─ ■ [S]
+
+Each ■ = 1km² cell
+── = bidirectional edge
+```
+
+All 6 algorithms share the same `GridSurvivalData[]` input (computed by Engine 2) and return an `AlgorithmResult` with selected grid IDs, edge paths (for MST/Dijkstra map visualization), trees required, OSI reduction estimate, and execution time.
+
+---
+
+## 🎯 Project Pipeline
+
+```
+Satellite Data (CSV)
+        ↓
+   DataProcessor (CSV → GeoJSON)
+        ↓
+   OSI Stress Map (Engine 1)
+        ↓
+   Survival AI (Engine 2)
+        ↓
+   Budget Optimizer (Engine 3) ──→ ROI Engine (Engine 4)
+        ↓
+   Multi-Year Simulator (Engine 5)
+        ↓
+   Green Optimization Lab (Engine 6)
+        ↓
+   Optimal Tree Plantation Zones
+```
+
+---
+
+## 📦 Scripts
+
+```bash
+npm run dev     # Start development server (http://localhost:3000)
+npm run build   # Build production bundle
+npm start       # Run production server
+npm run lint    # Run ESLint
+```
+
+---
+
+*Built for sustainable urban development · UODP 2.0 · Delhi NCR · 1KM² Grid*

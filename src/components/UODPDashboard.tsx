@@ -11,7 +11,9 @@ import BudgetPanel from '@/components/BudgetPanel';
 import SimulationPanel from '@/components/SimulationPanel';
 import GreenLabPanel from '@/components/GreenLabPanel';
 import PolicyPanel from '@/components/PolicyPanel';
+import EventSimulatorPanel from '@/components/EventSimulatorPanel';
 import { useAppStore } from '@/store/appStore';
+import { applyEventsToGrids } from '@/engines/eventEngine';
 import Link from 'next/link';
 import { DataProcessor } from '@/utils/dataProcessor';
 import { GeoJSONData, YearlyData, EngineTab } from '@/types';
@@ -26,6 +28,7 @@ const TABS: Tab[] = [
   { id: 'simulation', label: 'Simulator',   icon: '🔮', color: '#b388ff', tagClass: 'tag-purple', desc: 'Logistic growth model projecting impact to 2028' },
   { id: 'greenlab',   label: 'Green Lab',   icon: '🌳', color: '#4caf50', tagClass: 'tag-green',  desc: 'Graph algorithm lab: optimal tree placement via Greedy, PageRank, MST & more' },
   { id: 'policy',     label: 'Policy',      icon: '🚦', color: '#ff9100', tagClass: 'tag-amber',  desc: 'Zone classifier: Plantation vs CNG-only restriction per grid' },
+  { id: 'events',     label: 'Events',      icon: '📅', color: '#10b981', tagClass: 'tag-emerald', desc: 'Plantation event simulator: schedule real-world activities to see dynamic impact' },
 ];
 
 export default function UODPDashboard() {
@@ -36,8 +39,10 @@ export default function UODPDashboard() {
   const [error, setError]              = useState<string | null>(null);
   const [videoReady, setVideoReady]    = useState(false);
 
-  const { selectedYear, mode, viewMode, activeEngine, setActiveEngine,
-    optimizationResult, setLoading: setStoreLoading, setError: setStoreError } = useAppStore();
+  const { 
+    selectedYear, mode, viewMode, activeEngine, setActiveEngine,
+    optimizationResult, setLoading: setStoreLoading, setError: setStoreError, plantationEvents 
+  } = useAppStore();
 
   /* ── Data loading ── */
   useEffect(() => {
@@ -79,6 +84,36 @@ export default function UODPDashboard() {
     handleYearChange(mode === 'forecast' ? 2024 : selectedYear);
   }, [selectedYear, mode, handleYearChange]);
 
+  /* --- APPLY PLANTATION EVENTS --- */
+  const impactedData = useMemo(() => {
+    if (!currentData || !plantationEvents.length) return currentData;
+    
+    const newFeatures = currentData.features.map(feature => {
+      const gridId = feature.properties['system:index'];
+      const results = applyEventsToGrids([{
+        gridId,
+        currentNDVI: feature.properties.NDVI,
+        currentOSI: feature.properties.OSI,
+        currentAOD: feature.properties.AOD,
+        currentTemp: feature.properties.Temp,
+        // minimal fields for the logic
+        coordinates: [0,0], lat: 0, lng: 0, survivalProbability: 0, expectedNDVIGain: 0, stabilizationYears: 0, suitabilityScore: 0
+      } as any], plantationEvents, selectedYear);
+
+      const res = results[0];
+      return {
+        ...feature,
+        properties: {
+          ...feature.properties,
+          NDVI: res.currentNDVI,
+          OSI: res.currentOSI
+        }
+      };
+    });
+
+    return { ...currentData, features: newFeatures };
+  }, [currentData, plantationEvents, selectedYear]);
+
   /* ── Top urgent grids ── */
   const urgentGrids = useMemo(() => {
     if (!currentData?.features) return [];
@@ -103,11 +138,12 @@ export default function UODPDashboard() {
     if (!currentData) return null;
     if (activeEngine === 'survival')  return <TreeSurvivalPanel data={currentData} />;
     if (activeEngine === 'budget' || activeEngine === 'roi') return <BudgetPanel data={currentData} />;
-    if (activeEngine === 'simulation') return <SimulationPanel data={currentData} />;
+    if (activeEngine === 'simulation') return <SimulationPanel data={impactedData} />;
     if (activeEngine === 'greenlab')   return <GreenLabPanel />;
-    if (activeEngine === 'policy')     return <PolicyPanel data={currentData} />;
-    return <AnalyticsPanel data={currentData} selectedYear={selectedYear} previousYearData={prevData || undefined} mode={mode} />;
-  }, [currentData, activeEngine, selectedYear, prevData, mode]);
+    if (activeEngine === 'policy')     return <PolicyPanel data={impactedData} />;
+    if (activeEngine === 'events')     return <EventSimulatorPanel />;
+    return <AnalyticsPanel data={impactedData} selectedYear={selectedYear} previousYearData={prevData || undefined} mode={mode} />;
+  }, [currentData, activeEngine, selectedYear, prevData, mode, impactedData]);
 
   /* ── Loading ── */
   if (loading) return (
@@ -419,9 +455,9 @@ export default function UODPDashboard() {
             {/* Map canvas */}
             <div style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
               <AnimatePresence mode="wait">
-                {viewMode === '2d' && currentData && (
+                {viewMode === '2d' && impactedData && (
                   <motion.div key="2d" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ height: '100%' }}>
-                    <Map2D data={currentData} selectedYear={selectedYear} mode={mode} />
+                    <Map2D data={impactedData} selectedYear={selectedYear} mode={mode} />
                   </motion.div>
                 )}
                 {viewMode === '3d' && currentData && (

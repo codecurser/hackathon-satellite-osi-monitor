@@ -23,6 +23,7 @@ interface AppState extends TimeControlState, LayerControlState {
   simulationYear: number;
   greenLabState: GreenLabState;
   policyState: PolicyState;
+  plantationEvents: PlantationEvent[];
 
   // Actions
   setSelectedYear: (year: number) => void;
@@ -45,6 +46,9 @@ interface AppState extends TimeControlState, LayerControlState {
   setSimulationYear: (year: number) => void;
   setGreenLabState: (patch: Partial<GreenLabState>) => void;
   setPolicyState: (patch: Partial<PolicyState>) => void;
+  addPlantationEvent: (event: PlantationEvent) => void;
+  removePlantationEvent: (id: string) => void;
+  clearPlantationEvents: () => void;
   reset: () => void;
 }
 
@@ -111,6 +115,7 @@ export const useAppStore = create<AppState>((set) => ({
     osiThreshold: 750,
     survivalThreshold: 0.60,
   },
+  plantationEvents: [],
 
   setSelectedYear: (year) => set({ selectedYear: year }),
   setIsPlaying: (playing) => set({ isPlaying: playing }),
@@ -140,7 +145,20 @@ export const useAppStore = create<AppState>((set) => ({
   setSimulationSnapshots: (snapshots) => set({ simulationSnapshots: snapshots }),
   setSimulationYear: (year) => set({ simulationYear: year }),
   setGreenLabState: (patch) => set((state) => ({ greenLabState: { ...state.greenLabState, ...patch } })),
-  setPolicyState: (patch) => set((state) => ({ policyState: { ...state.policyState, ...patch } })),
+  setPolicyState: (patch) => set((state) => ({
+    policyState: { ...state.policyState, ...patch }
+  })),
+
+  addPlantationEvent: (event) => set((state) => ({
+    plantationEvents: [...state.plantationEvents, event]
+  })),
+
+  removePlantationEvent: (id) => set((state) => ({
+    plantationEvents: state.plantationEvents.filter(e => e.id !== id)
+  })),
+
+  clearPlantationEvents: () => set({ plantationEvents: [] }),
+
   reset: () => set({
     ...initialTimeState,
     ...initialLayerState,

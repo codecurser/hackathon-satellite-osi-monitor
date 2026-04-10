@@ -237,6 +237,20 @@ export default function UODPDashboard() {
             </motion.div>
           </Link>
 
+          <Link href="/urban-plan" style={{ textDecoration: 'none' }}>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                padding: '8px 16px', borderRadius: 12,
+                background: 'linear-gradient(135deg, rgba(74,222,128,0.18), rgba(96,165,250,0.1))',
+                border: '1px solid rgba(74,222,128,0.4)',
+                cursor: 'pointer'
+              }}>
+              <span style={{ fontSize: 16 }}>🌿</span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: '#4ade80' }}>URBAN PLANNER</span>
+            </motion.div>
+          </Link>
+
           {/* Right stats */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>
             {/* Live badge */}

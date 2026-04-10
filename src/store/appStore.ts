@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import {
   TimeControlState, LayerControlState, MapViewState,
   BudgetConfig, GridSurvivalData, OptimizationResult,
-  ROIResult, YearSnapshot, EngineTab
+  ROIResult, YearSnapshot, EngineTab, GreenLabState, GraphAlgorithm
 } from '@/types';
 
 interface AppState extends TimeControlState, LayerControlState {
@@ -20,6 +20,7 @@ interface AppState extends TimeControlState, LayerControlState {
   roiResult: ROIResult | null;
   simulationSnapshots: YearSnapshot[] | null;
   simulationYear: number;
+  greenLabState: GreenLabState;
 
   // Actions
   setSelectedYear: (year: number) => void;
@@ -40,6 +41,7 @@ interface AppState extends TimeControlState, LayerControlState {
   setROIResult: (result: ROIResult | null) => void;
   setSimulationSnapshots: (snapshots: YearSnapshot[] | null) => void;
   setSimulationYear: (year: number) => void;
+  setGreenLabState: (patch: Partial<GreenLabState>) => void;
   reset: () => void;
 }
 
@@ -90,6 +92,15 @@ export const useAppStore = create<AppState>((set) => ({
   roiResult: null,
   simulationSnapshots: null,
   simulationYear: 2025,
+  greenLabState: {
+    primaryAlgorithm: 'greedy' as GraphAlgorithm,
+    compareAlgorithm: null,
+    isRunning: false,
+    primaryResult: null,
+    compareResult: null,
+    topN: 30,
+    compareMode: false,
+  },
 
   setSelectedYear: (year) => set({ selectedYear: year }),
   setIsPlaying: (playing) => set({ isPlaying: playing }),
@@ -118,6 +129,7 @@ export const useAppStore = create<AppState>((set) => ({
   setROIResult: (result) => set({ roiResult: result }),
   setSimulationSnapshots: (snapshots) => set({ simulationSnapshots: snapshots }),
   setSimulationYear: (year) => set({ simulationYear: year }),
+  setGreenLabState: (patch) => set((state) => ({ greenLabState: { ...state.greenLabState, ...patch } })),
   reset: () => set({
     ...initialTimeState,
     ...initialLayerState,
@@ -133,5 +145,14 @@ export const useAppStore = create<AppState>((set) => ({
     roiResult: null,
     simulationSnapshots: null,
     simulationYear: 2025,
+    greenLabState: {
+      primaryAlgorithm: 'greedy' as GraphAlgorithm,
+      compareAlgorithm: null,
+      isRunning: false,
+      primaryResult: null,
+      compareResult: null,
+      topN: 30,
+      compareMode: false,
+    },
   })
 }));

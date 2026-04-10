@@ -162,6 +162,9 @@ input[type="range"].slider-cyan {
 input[type="range"].slider-amber {
   background: linear-gradient(to right, var(--amber) var(--pct,0%), rgba(255,255,255,0.1) var(--pct,0%));
 }
+input[type="range"].slider-green {
+  background: linear-gradient(to right, #4caf50 var(--pct,0%), rgba(255,255,255,0.1) var(--pct,0%));
+}
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none; appearance: none;
   width: 16px; height: 16px; border-radius: 50%;
@@ -171,6 +174,9 @@ input[type="range"]::-webkit-slider-thumb {
 }
 input[type="range"].slider-amber::-webkit-slider-thumb {
   border-color: var(--amber); box-shadow: 0 0 8px rgba(255,193,7,0.6);
+}
+input[type="range"].slider-green::-webkit-slider-thumb {
+  border-color: #4caf50; box-shadow: 0 0 8px rgba(76,175,80,0.6);
 }
 input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.3); }
 

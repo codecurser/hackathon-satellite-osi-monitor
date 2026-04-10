@@ -148,4 +148,29 @@ export interface YearSnapshot {
 }
 
 // ========== Dashboard Types ==========
-export type EngineTab = 'osi' | 'survival' | 'budget' | 'roi' | 'simulation';
+export type EngineTab = 'osi' | 'survival' | 'budget' | 'roi' | 'simulation' | 'greenlab';
+
+// ========== ENGINE 6: Graph Optimizer Types ==========
+export type GraphAlgorithm = 'greedy' | 'pagerank' | 'centrality' | 'dijkstra' | 'mst' | 'maxcoverage';
+
+export interface AlgorithmResult {
+  algorithm: GraphAlgorithm;
+  selectedGridIds: string[];
+  edges?: [number, number][][]; // Array of paths (each path is an array of [lng, lat])
+  treesRequired: number;
+  osiReductionPct: number;
+  coverageArea: number;       // km²
+  impactScore: number;
+  executionTimeMs: number;
+  highlights: string[];       // human-readable callouts
+}
+
+export interface GreenLabState {
+  primaryAlgorithm: GraphAlgorithm;
+  compareAlgorithm: GraphAlgorithm | null;
+  isRunning: boolean;
+  primaryResult: AlgorithmResult | null;
+  compareResult: AlgorithmResult | null;
+  topN: number;
+  compareMode: boolean;
+}

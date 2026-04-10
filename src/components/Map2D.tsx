@@ -26,7 +26,7 @@ const Map2D: React.FC<Map2DProps> = ({ data, selectedYear, mode }) => {
   const {
     showOSI, showAOD, showNDVI, showTemp,
     selectedFeature, selectedPlantationLocation,
-    setSelectedFeature, setMapViewState,
+    setSelectedFeature, setMapViewState, greenLabState
   } = useAppStore();
 
   // Safe layer/source removal helper
@@ -233,6 +233,44 @@ const Map2D: React.FC<Map2DProps> = ({ data, selectedYear, mode }) => {
       console.warn('Highlight layer error:', e);
     }
   }, [selectedPlantationLocation, mapLoaded, safeRemoveLayers]);
+
+  // Graph Edges Visualization
+  useEffect(() => {
+    if (!map.current || !mapLoaded) return;
+    const m = map.current;
+
+    safeRemoveLayers(m, ['graph-edges-layer'], 'graph-edges-source');
+
+    const result = greenLabState.primaryResult;
+    if (!result || !result.edges || result.edges.length === 0) return;
+
+    const features: GeoJSON.Feature[] = result.edges.map(edge => ({
+      type: 'Feature',
+      geometry: { type: 'LineString', coordinates: edge },
+      properties: {}
+    }));
+
+    try {
+      m.addSource('graph-edges-source', {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features }
+      });
+
+      m.addLayer({
+        id: 'graph-edges-layer',
+        type: 'line',
+        source: 'graph-edges-source',
+        paint: {
+          'line-color': '#4caf50',
+          'line-width': 2,
+          'line-opacity': 0.6,
+          'line-dasharray': [2, 1]
+        }
+      });
+    } catch (e) {
+      console.warn('Graph edges layer error:', e);
+    }
+  }, [greenLabState.primaryResult, mapLoaded, safeRemoveLayers]);
 
   return (
     <div className="relative w-full h-full">

@@ -136,8 +136,8 @@ export default function UODPDashboard() {
   /* ── Right panel ── */
   const RightPanel = useCallback(() => {
     if (!currentData) return null;
-    if (activeEngine === 'survival')  return <TreeSurvivalPanel data={currentData} />;
-    if (activeEngine === 'budget' || activeEngine === 'roi') return <BudgetPanel data={currentData} />;
+    if (activeEngine === 'survival')  return <TreeSurvivalPanel data={impactedData} />;
+    if (activeEngine === 'budget' || activeEngine === 'roi') return <BudgetPanel data={impactedData} />;
     if (activeEngine === 'simulation') return <SimulationPanel data={impactedData} />;
     if (activeEngine === 'greenlab')   return <GreenLabPanel />;
     if (activeEngine === 'policy')     return <PolicyPanel data={impactedData} />;

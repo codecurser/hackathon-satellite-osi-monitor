@@ -26,7 +26,8 @@ const Map2D: React.FC<Map2DProps> = ({ data, selectedYear, mode }) => {
   const {
     showOSI, showAOD, showNDVI, showTemp,
     selectedFeature, selectedPlantationLocation,
-    setSelectedFeature, setMapViewState, greenLabState
+    setSelectedFeature, setMapViewState, greenLabState,
+    plantationEvents
   } = useAppStore();
 
   // Safe layer/source removal helper
@@ -271,6 +272,82 @@ const Map2D: React.FC<Map2DProps> = ({ data, selectedYear, mode }) => {
       console.warn('Graph edges layer error:', e);
     }
   }, [greenLabState.primaryResult, mapLoaded, safeRemoveLayers]);
+  
+  // Plantation Events Visualization
+  useEffect(() => {
+    if (!map.current || !mapLoaded || !data) return;
+    const m = map.current;
+
+    safeRemoveLayers(m, ['plantation-events-layer', 'plantation-labels-layer'], 'plantation-events-source');
+
+    if (!plantationEvents || plantationEvents.length === 0) return;
+
+    // Filter events for the current selected year
+    const yearEvents = plantationEvents.filter(e => new Date(e.date).getFullYear() === selectedYear);
+    if (yearEvents.length === 0) return;
+
+    // Map events to features by joining with grid data to get coordinates
+    const features: GeoJSON.Feature[] = yearEvents.map(event => {
+      const gridFeature = data.features.find(f => f.properties['system:index'] === event.gridId);
+      if (!gridFeature) return null;
+
+      // Get centroid of the polygon
+      const coords = gridFeature.geometry.coordinates[0] as [number, number][];
+      const lng = coords.reduce((s, c) => s + (c[0] || 0), 0) / coords.length;
+      const lat = coords.reduce((s, c) => s + (c[1] || 0), 0) / coords.length;
+
+      return {
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: [lng, lat] },
+        properties: { ...event }
+      };
+    }).filter(Boolean) as GeoJSON.Feature[];
+
+    if (features.length === 0) return;
+
+    try {
+      m.addSource('plantation-events-source', {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features }
+      });
+
+      // Event circles
+      m.addLayer({
+        id: 'plantation-events-layer',
+        type: 'circle',
+        source: 'plantation-events-source',
+        paint: {
+          'circle-radius': 8,
+          'circle-color': '#10b981',
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#ffffff',
+          'circle-opacity': 0.8
+        }
+      });
+
+      // Event labels (tree count)
+      m.addLayer({
+        id: 'plantation-labels-layer',
+        type: 'symbol',
+        source: 'plantation-events-source',
+        layout: {
+          'text-field': ['concat', '+', ['get', 'treesPlanted'], ' 🌳'],
+          'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+          'text-size': 9,
+          'text-offset': [0, 1.5],
+          'text-anchor': 'top'
+        },
+        paint: {
+          'text-color': '#10b981',
+          'text-halo-color': '#000000',
+          'text-halo-width': 1
+        }
+      });
+    } catch (e) {
+      console.warn('Plantation events layer error:', e);
+    }
+  }, [plantationEvents, selectedYear, data, mapLoaded, safeRemoveLayers]);
+
 
   return (
     <div className="relative w-full h-full">

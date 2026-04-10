@@ -109,7 +109,7 @@ export const useAppStore = create<AppState>((set) => ({
     isRunning: false,
     showPolicyLayer: false,
     osiThreshold: 750,
-    survivalThreshold: 0.35,
+    survivalThreshold: 0.60,
   },
 
   setSelectedYear: (year) => set({ selectedYear: year }),
@@ -170,7 +170,7 @@ export const useAppStore = create<AppState>((set) => ({
       isRunning: false,
       showPolicyLayer: false,
       osiThreshold: 750,
-      survivalThreshold: 0.35,
+      survivalThreshold: 0.60,
     },
   })
 }));

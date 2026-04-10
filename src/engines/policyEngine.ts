@@ -66,7 +66,7 @@ function classifyGrid(
     }
 
     // Low survival + very high OSI → critical CNG ban
-    if (sp < 0.25 && osi >= 800) {
+    if (sp < 0.40 && osi >= 800) {
       return {
         zoneType: 'critical_cng',
         reason: `OSI ${Math.round(osi)} extreme + survival ${(sp * 100).toFixed(0)}% (plantation not viable) → IMMEDIATE CNG BAN`,
@@ -77,7 +77,7 @@ function classifyGrid(
     // Low survival + high OSI → CNG restriction
     return {
       zoneType: 'cng_restriction',
-      reason: `OSI ${Math.round(osi)} high + survival ${(sp * 100).toFixed(0)}% (plantation not viable) → CNG vehicles only`,
+      reason: `OSI ${Math.round(osi)} high + survival ${(sp * 100).toFixed(0)}% below viable threshold (${(survivalThreshold*100).toFixed(0)}%) — CNG vehicles only`,
       urgencyLevel: osi >= 800 ? 3 : 2,
     };
   }
@@ -99,7 +99,7 @@ function estimateVehicleImpact(zoneType: ZoneType): { vehicles: number; co2Kg: n
 export function runPolicyEngine(
   grids: GridSurvivalData[],
   osiThreshold = 750,
-  survivalThreshold = 0.35
+  survivalThreshold = 0.60
 ): PolicyResult {
   const t0 = performance.now();
 

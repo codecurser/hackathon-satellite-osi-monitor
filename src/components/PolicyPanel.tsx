@@ -170,8 +170,8 @@ export default function PolicyPanel({ data }: PolicyPanelProps) {
     ]).filter(d => d.value > 0);
   }, [result]);
 
-  const osiPct = ((osiThreshold - 700) / (850 - 700)) * 100;
-  const survPct = ((survivalThreshold - 0.15) / (0.60 - 0.15)) * 100;
+  const osiPct  = ((osiThreshold - 700) / (850 - 700)) * 100;
+  const survPct = ((survivalThreshold - 0.50) / (0.80 - 0.50)) * 100;
 
   return (
     <div className="panel" style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden',
@@ -232,13 +232,13 @@ export default function PolicyPanel({ data }: PolicyPanelProps) {
               <span className="label" style={{ fontSize: 11 }}>Min Survival (Plantation Viable)</span>
               <span className="mono display" style={{ fontSize: 18, fontWeight: 800, color: '#00f59d' }}>{(survivalThreshold * 100).toFixed(0)}%</span>
             </div>
-            <input type="range" min={0.15} max={0.60} step={0.05}
+            <input type="range" min={0.50} max={0.80} step={0.05}
               value={survivalThreshold}
               onChange={e => setPolicyState({ survivalThreshold: +e.target.value })}
               className="slider-green"
               style={{ '--pct': `${survPct}%` } as React.CSSProperties} />
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
-              {['15%', '37%', '60%'].map(l => <span key={l} className="mono text-3" style={{ fontSize: 9 }}>{l}</span>)}
+              {['50%', '65%', '80%'].map(l => <span key={l} className="mono text-3" style={{ fontSize: 9 }}>{l}</span>)}
             </div>
           </div>
         </div>

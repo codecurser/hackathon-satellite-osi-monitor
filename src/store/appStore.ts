@@ -2,7 +2,8 @@ import { create } from 'zustand';
 import {
   TimeControlState, LayerControlState, MapViewState,
   BudgetConfig, GridSurvivalData, OptimizationResult,
-  ROIResult, YearSnapshot, EngineTab, GreenLabState, GraphAlgorithm
+  ROIResult, YearSnapshot, EngineTab, GreenLabState, GraphAlgorithm,
+  PolicyState
 } from '@/types';
 
 interface AppState extends TimeControlState, LayerControlState {
@@ -21,6 +22,7 @@ interface AppState extends TimeControlState, LayerControlState {
   simulationSnapshots: YearSnapshot[] | null;
   simulationYear: number;
   greenLabState: GreenLabState;
+  policyState: PolicyState;
 
   // Actions
   setSelectedYear: (year: number) => void;
@@ -42,6 +44,7 @@ interface AppState extends TimeControlState, LayerControlState {
   setSimulationSnapshots: (snapshots: YearSnapshot[] | null) => void;
   setSimulationYear: (year: number) => void;
   setGreenLabState: (patch: Partial<GreenLabState>) => void;
+  setPolicyState: (patch: Partial<PolicyState>) => void;
   reset: () => void;
 }
 
@@ -101,6 +104,13 @@ export const useAppStore = create<AppState>((set) => ({
     topN: 30,
     compareMode: false,
   },
+  policyState: {
+    result: null,
+    isRunning: false,
+    showPolicyLayer: false,
+    osiThreshold: 750,
+    survivalThreshold: 0.35,
+  },
 
   setSelectedYear: (year) => set({ selectedYear: year }),
   setIsPlaying: (playing) => set({ isPlaying: playing }),
@@ -130,6 +140,7 @@ export const useAppStore = create<AppState>((set) => ({
   setSimulationSnapshots: (snapshots) => set({ simulationSnapshots: snapshots }),
   setSimulationYear: (year) => set({ simulationYear: year }),
   setGreenLabState: (patch) => set((state) => ({ greenLabState: { ...state.greenLabState, ...patch } })),
+  setPolicyState: (patch) => set((state) => ({ policyState: { ...state.policyState, ...patch } })),
   reset: () => set({
     ...initialTimeState,
     ...initialLayerState,
@@ -153,6 +164,13 @@ export const useAppStore = create<AppState>((set) => ({
       compareResult: null,
       topN: 30,
       compareMode: false,
+    },
+    policyState: {
+      result: null,
+      isRunning: false,
+      showPolicyLayer: false,
+      osiThreshold: 750,
+      survivalThreshold: 0.35,
     },
   })
 }));

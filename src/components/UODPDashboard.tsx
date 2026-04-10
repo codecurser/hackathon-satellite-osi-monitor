@@ -10,6 +10,7 @@ import TreeSurvivalPanel from '@/components/TreeSurvivalPanel';
 import BudgetPanel from '@/components/BudgetPanel';
 import SimulationPanel from '@/components/SimulationPanel';
 import GreenLabPanel from '@/components/GreenLabPanel';
+import PolicyPanel from '@/components/PolicyPanel';
 import { useAppStore } from '@/store/appStore';
 import Link from 'next/link';
 import { DataProcessor } from '@/utils/dataProcessor';
@@ -24,6 +25,7 @@ const TABS: Tab[] = [
   { id: 'roi',        label: 'ROI Engine',  icon: '📊', color: '#448aff', tagClass: 'tag-cyan',   desc: 'CO₂, O₂ & OSI return per ₹ invested' },
   { id: 'simulation', label: 'Simulator',   icon: '🔮', color: '#b388ff', tagClass: 'tag-purple', desc: 'Logistic growth model projecting impact to 2028' },
   { id: 'greenlab',   label: 'Green Lab',   icon: '🌳', color: '#4caf50', tagClass: 'tag-green',  desc: 'Graph algorithm lab: optimal tree placement via Greedy, PageRank, MST & more' },
+  { id: 'policy',     label: 'Policy',      icon: '🚦', color: '#ff9100', tagClass: 'tag-amber',  desc: 'Zone classifier: Plantation vs CNG-only restriction per grid' },
 ];
 
 export default function UODPDashboard() {
@@ -103,6 +105,7 @@ export default function UODPDashboard() {
     if (activeEngine === 'budget' || activeEngine === 'roi') return <BudgetPanel data={currentData} />;
     if (activeEngine === 'simulation') return <SimulationPanel data={currentData} />;
     if (activeEngine === 'greenlab')   return <GreenLabPanel />;
+    if (activeEngine === 'policy')     return <PolicyPanel data={currentData} />;
     return <AnalyticsPanel data={currentData} selectedYear={selectedYear} previousYearData={prevData || undefined} mode={mode} />;
   }, [currentData, activeEngine, selectedYear, prevData, mode]);
 

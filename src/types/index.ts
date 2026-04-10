@@ -148,7 +148,7 @@ export interface YearSnapshot {
 }
 
 // ========== Dashboard Types ==========
-export type EngineTab = 'osi' | 'survival' | 'budget' | 'roi' | 'simulation' | 'greenlab';
+export type EngineTab = 'osi' | 'survival' | 'budget' | 'roi' | 'simulation' | 'greenlab' | 'policy';
 
 // ========== ENGINE 6: Graph Optimizer Types ==========
 export type GraphAlgorithm = 'greedy' | 'pagerank' | 'centrality' | 'dijkstra' | 'mst' | 'maxcoverage';
@@ -173,4 +173,47 @@ export interface GreenLabState {
   compareResult: AlgorithmResult | null;
   topN: number;
   compareMode: boolean;
+}
+
+// ========== ENGINE 7: Policy Engine Types ==========
+export type ZoneType = 'green' | 'plantation' | 'cng_restriction' | 'critical_cng' | 'monitored';
+
+export interface PolicyZone {
+  gridId: string;
+  coordinates: [number, number];
+  lat: number;
+  lng: number;
+  zoneType: ZoneType;
+  osi: number;
+  ndvi: number;
+  aod: number;
+  temp: number;
+  survivalProbability: number;
+  suitabilityScore: number;
+  reason: string;           // human-readable reason for classification
+  estimatedVehicles: number; // daily vehicles affected (heuristic)
+  co2ReductionKg: number;   // daily CO2 reduction if CNG enforced
+  urgencyLevel: 1 | 2 | 3; // 1=low, 2=medium, 3=high
+}
+
+export interface PolicyResult {
+  zones: PolicyZone[];
+  totalGrids: number;
+  greenZones: number;
+  plantationZones: number;
+  cngRestrictionZones: number;
+  criticalCngZones: number;
+  monitoredZones: number;
+  totalEstimatedVehiclesAffected: number;
+  totalCO2ReductionTonnesPerDay: number;
+  totalPlantationAreaKm2: number;
+  executionTimeMs: number;
+}
+
+export interface PolicyState {
+  result: PolicyResult | null;
+  isRunning: boolean;
+  showPolicyLayer: boolean;
+  osiThreshold: number;       // grids above this are "stressed" (default 750)
+  survivalThreshold: number;  // below this, plantation not viable (default 0.35)
 }
